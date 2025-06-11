@@ -9,26 +9,26 @@ import (
 	"strings"
 )
 
-type funcValues struct {
+type FuncValues struct {
 	X []float64
 	Y []float64
 }
 
 var reader = bufio.NewReader(os.Stdin)
 
-func HandleInput() (funcValues, error) {
+func HandleInput() (FuncValues, error) {
 	fmt.Println("Как вы хотите осуществить ввод?")
 	fmt.Println("Ручной / Файл / Выбор функции (i/f/c)")
 	fmt.Print("> ")
 
 	choiceLine, err := reader.ReadString('\n')
 	if err != nil {
-		return funcValues{}, fmt.Errorf("ошибка чтения ввода: %w", err)
+		return FuncValues{}, fmt.Errorf("ошибка чтения ввода: %w", err)
 	}
 	choice := strings.ToLower(strings.TrimSpace(choiceLine))
 
 	if len(choice) == 0 {
-		return funcValues{}, errors.New("не введён режим ввода")
+		return FuncValues{}, errors.New("не введён режим ввода")
 	}
 
 	switch choice[0] {
@@ -37,33 +37,33 @@ func HandleInput() (funcValues, error) {
 	case 'f':
 		return fileInput()
 	case 'c':
-		return funcValues{}, chooseFunction()
+		return FuncValues{}, chooseFunction()
 	default:
-		return funcValues{}, fmt.Errorf("неизвестный тип ввода: %s", choice)
+		return FuncValues{}, fmt.Errorf("неизвестный тип ввода: %s", choice)
 	}
 }
 
-func manualInput() (funcValues, error) {
+func manualInput() (FuncValues, error) {
 
 	fmt.Println("Введите значения x (через пробел)")
 	fmt.Print("> ")
 	xLine, err := reader.ReadString('\n')
 	if err != nil {
-		return funcValues{}, fmt.Errorf("ошибка чтения x: %w", err)
+		return FuncValues{}, fmt.Errorf("ошибка чтения x: %w", err)
 	}
 
 	fmt.Println("Введите значения y (через пробел)")
 	fmt.Print("> ")
 	yLine, err := reader.ReadString('\n')
 	if err != nil {
-		return funcValues{}, fmt.Errorf("ошибка чтения y: %w", err)
+		return FuncValues{}, fmt.Errorf("ошибка чтения y: %w", err)
 	}
 
 	xs := strings.Fields(xLine)
 	ys := strings.Fields(yLine)
 
 	if len(xs) != len(ys) {
-		return funcValues{}, fmt.Errorf("количество значений x (%d) не совпадает с количеством y (%d)", len(xs), len(ys))
+		return FuncValues{}, fmt.Errorf("количество значений x (%d) не совпадает с количеством y (%d)", len(xs), len(ys))
 	}
 
 	fmt.Println("Ввод принят.")
@@ -71,35 +71,35 @@ func manualInput() (funcValues, error) {
 	xsFloat, err := parseFloatSlice(xs)
 
 	if err != nil {
-		return funcValues{}, err
+		return FuncValues{}, err
 	}
 
 	ysFloat, err := parseFloatSlice(ys)
 
 	if err != nil {
-		return funcValues{}, err
+		return FuncValues{}, err
 	}
 
-	return funcValues{X: xsFloat, Y: ysFloat}, nil
+	return FuncValues{X: xsFloat, Y: ysFloat}, nil
 
 }
 
-func fileInput() (funcValues, error) {
+func fileInput() (FuncValues, error) {
 	fmt.Println("Введите путь к файлу")
 	fmt.Print("> ")
 	filePathLine, err := reader.ReadString('\n')
 	if err != nil {
-		return funcValues{}, fmt.Errorf("ошибка чтения пути: %w", err)
+		return FuncValues{}, fmt.Errorf("ошибка чтения пути: %w", err)
 	}
 	filePath := strings.TrimSpace(filePathLine)
 
 	if filePath == "" {
-		return funcValues{}, errors.New("путь к файлу не может быть пустым")
+		return FuncValues{}, errors.New("путь к файлу не может быть пустым")
 	}
 
 	file, err := os.Open(filePath)
 	if err != nil {
-		return funcValues{}, fmt.Errorf("ошибка открытия файла: %w", err)
+		return FuncValues{}, fmt.Errorf("ошибка открытия файла: %w", err)
 	}
 	defer file.Close()
 
@@ -112,13 +112,13 @@ func fileInput() (funcValues, error) {
 		line1 = scanner.Text()
 	} else {
 		fmt.Println("Файл пуст или первая строка отсутствует")
-		return funcValues{}, fmt.Errorf("Файл пуст или первая строка отсутствует")
+		return FuncValues{}, fmt.Errorf("Файл пуст или первая строка отсутствует")
 	}
 
 	if scanner.Scan() {
 		line2 = scanner.Text()
 	} else {
-		return funcValues{}, fmt.Errorf("В файле только одна строка")
+		return FuncValues{}, fmt.Errorf("В файле только одна строка")
 
 	}
 
@@ -127,16 +127,16 @@ func fileInput() (funcValues, error) {
 	xsFloat, err := parseFloatSlice(xs)
 
 	if err != nil {
-		return funcValues{}, err
+		return FuncValues{}, err
 	}
 
 	ysFloat, err := parseFloatSlice(ys)
 
 	if err != nil {
-		return funcValues{}, err
+		return FuncValues{}, err
 	}
 
-	return funcValues{X: xsFloat, Y: ysFloat}, nil
+	return FuncValues{X: xsFloat, Y: ysFloat}, nil
 }
 
 func chooseFunction() error {
