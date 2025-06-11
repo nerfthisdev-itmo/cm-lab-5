@@ -99,7 +99,7 @@ func fileInput() (FuncValues, error) {
 
 	file, err := os.Open(filePath)
 	if err != nil {
-		return FuncValues{}, fmt.Errorf("ошибка открытия файла: %w", err)
+		return FuncValues{}, err
 	}
 	defer file.Close()
 
