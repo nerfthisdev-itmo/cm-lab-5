@@ -16,19 +16,19 @@ type funcValues struct {
 
 var reader = bufio.NewReader(os.Stdin)
 
-func HandleInput() error {
+func HandleInput() (funcValues, error) {
 	fmt.Println("Как вы хотите осуществить ввод?")
 	fmt.Println("Ручной / Файл / Выбор функции (i/f/c)")
 	fmt.Print("> ")
 
 	choiceLine, err := reader.ReadString('\n')
 	if err != nil {
-		return fmt.Errorf("ошибка чтения ввода: %w", err)
+		return funcValues{}, fmt.Errorf("ошибка чтения ввода: %w", err)
 	}
 	choice := strings.ToLower(strings.TrimSpace(choiceLine))
 
 	if len(choice) == 0 {
-		return errors.New("не введён режим ввода")
+		return funcValues{}, errors.New("не введён режим ввода")
 	}
 
 	switch choice[0] {
@@ -37,9 +37,9 @@ func HandleInput() error {
 	case 'f':
 		return fileInput()
 	case 'c':
-		return chooseFunction()
+		return funcValues{}, chooseFunction()
 	default:
-		return fmt.Errorf("неизвестный тип ввода: %s", choice)
+		return funcValues{}, fmt.Errorf("неизвестный тип ввода: %s", choice)
 	}
 }
 
