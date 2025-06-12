@@ -6,6 +6,4 @@ type FuncValues struct {
 }
 
 
-type FiniteDifferenceTable struct {
-	Table [][]float64
-} 
+ 
