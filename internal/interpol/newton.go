@@ -1,8 +1,5 @@
 package interpol
 
-
-
-func Newton(fVals FuncValues)   {
-  
+func Newton(fVals FuncValues) {
 
 }

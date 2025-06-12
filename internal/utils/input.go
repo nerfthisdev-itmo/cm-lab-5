@@ -11,13 +11,9 @@ import (
 	"github.com/nerfthisdev-itmo/cm-lab-5/internal/interpol"
 )
 
-
-
 var reader = bufio.NewReader(os.Stdin)
 
-
-
-func HandleInput() (interpol.FuncValues , error) {
+func HandleInput() (interpol.FuncValues, error) {
 	fmt.Println("Как вы хотите осуществить ввод?")
 	fmt.Println("Ручной / Файл / Выбор функции (i/f/c)")
 	fmt.Print("> ")

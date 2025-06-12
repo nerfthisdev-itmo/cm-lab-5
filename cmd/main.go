@@ -4,20 +4,18 @@ import (
 	"fmt"
 
 	"github.com/nerfthisdev-itmo/cm-lab-5/internal/interpol"
-	"github.com/nerfthisdev-itmo/cm-lab-5/internal/utils"
 )
 
 func main() {
-	values, err := utils.HandleInput()
-  
 
-	if err != nil {
-		panic(err)
+	testvalues := interpol.FuncValues{
+		X: []float64{0.1, 0.2, 0.3, 0.4, 0.5},
+		Y: []float64{1.25, 2.38, 3.79, 5.44, 7.14},
 	}
 
-	fmt.Println(values.X, values.Y)
+	table := interpol.BuildFiniteDifferenceTable(testvalues)
 
-  table := interpol.BuildFiniteDifferenceTable(values)
+	interpol.PrintFiniteDifferenceTable(table, testvalues)
 
-  interpol.PrintFiniteDifferenceTable(table, values)
+	fmt.Printf("Интерполяция многочленом Лагранжа: %f\n", interpol.Lagrange(testvalues, 0.35))
 }
