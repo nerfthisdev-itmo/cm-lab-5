@@ -1,21 +1,35 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
+	"strconv"
+	"strings"
 
 	"github.com/nerfthisdev-itmo/cm-lab-5/internal/interpol"
+	"github.com/nerfthisdev-itmo/cm-lab-5/internal/utils"
 )
 
-func main() {
+var reader = bufio.NewReader(os.Stdin)
 
-	testvalues := interpol.FuncValues{
-		X: []float64{0.1, 0.2, 0.3, 0.4, 0.5},
-		Y: []float64{1.25, 2.38, 3.79, 5.44, 7.14},
+func main() {
+	values, err := utils.HandleInput()
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	table := interpol.BuildFiniteDifferenceTable(testvalues)
+	fmt.Println("Введите значение x, в котором нужно интерполировать:")
+	fmt.Print("> ")
+	xLine, err := reader.ReadString('\n')
+	if err != nil {
+		log.Fatal("Ошибка чтения x: ", err)
+	}
+	x, err := strconv.ParseFloat(strings.TrimSpace(xLine), 64)
+	if err != nil {
+		log.Fatal("Ошибка преобразования x: ", err)
+	}
 
-	interpol.PrintFiniteDifferenceTable(table, testvalues)
-
-	fmt.Printf("Интерполяция многочленом Лагранжа: %f\n", interpol.Lagrange(testvalues, 0.35))
+	interpol.ApplyAllInterpolations(values, x)
 }
