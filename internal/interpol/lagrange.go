@@ -1,7 +1,6 @@
 package interpol
 
 func Lagrange(values FuncValues, x float64) float64 {
-
 	n := len(values.X)
 	result := 0.0
 
@@ -16,5 +15,4 @@ func Lagrange(values FuncValues, x float64) float64 {
 	}
 
 	return result
-
 }

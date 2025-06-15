@@ -24,8 +24,25 @@ func BuildFiniteDifferenceTable(values FuncValues) FiniteDifferenceTable {
 	return FiniteDifferenceTable{Table: table}
 }
 
-func PrintFiniteDifferenceTable(table FiniteDifferenceTable, values FuncValues) {
+func BuildDividedDifferenceTable(values FuncValues) [][]float64 {
+	n := len(values.X)
+	table := make([][]float64, n)
 
+	for i := range n {
+		table[i] = make([]float64, n)
+		table[i][0] = values.Y[i]
+	}
+
+	for j := 1; j < n; j++ {
+		for i := range n - j {
+			table[i][j] = (table[i+1][j-1] - table[i][j-1]) / (values.X[i+j] - values.X[i])
+		}
+	}
+
+	return table
+}
+
+func PrintFiniteDifferenceTable(table FiniteDifferenceTable, values FuncValues) {
 	fmt.Printf("%-10s", "x")
 	for i := range table.Table[0] {
 		fmt.Printf("%-12s", fmt.Sprintf("Δ^%d y", i))
