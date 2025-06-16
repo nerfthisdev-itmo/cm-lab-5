@@ -6,6 +6,10 @@ type FiniteDifferenceTable struct {
 	Table [][]float64
 }
 
+type DividedDifferenceTable struct {
+	Table [][]float64
+}
+
 func BuildFiniteDifferenceTable(values FuncValues) FiniteDifferenceTable {
 	n := len(values.Y)
 	table := make([][]float64, n)
@@ -24,7 +28,7 @@ func BuildFiniteDifferenceTable(values FuncValues) FiniteDifferenceTable {
 	return FiniteDifferenceTable{Table: table}
 }
 
-func BuildDividedDifferenceTable(values FuncValues) [][]float64 {
+func BuildDividedDifferenceTable(values FuncValues) DividedDifferenceTable {
 	n := len(values.X)
 	table := make([][]float64, n)
 
@@ -39,13 +43,29 @@ func BuildDividedDifferenceTable(values FuncValues) [][]float64 {
 		}
 	}
 
-	return table
+	return DividedDifferenceTable{Table: table}
 }
 
 func PrintFiniteDifferenceTable(table FiniteDifferenceTable, values FuncValues) {
 	fmt.Printf("%-10s", "x")
 	for i := range table.Table[0] {
 		fmt.Printf("%-12s", fmt.Sprintf("Δ^%d y", i))
+	}
+	fmt.Println()
+
+	for i := range table.Table {
+		fmt.Printf("%-10.4f", values.X[i])
+		for j := range table.Table[i] {
+			fmt.Printf("%-12.4f", table.Table[i][j])
+		}
+		fmt.Println()
+	}
+}
+
+func PrintDividedDifferenceTable(table DividedDifferenceTable, values FuncValues) {
+	fmt.Printf("%-10s", "x")
+	for i := range table.Table[0] {
+		fmt.Printf("%-12s", fmt.Sprintf("D^%d y", i))
 	}
 	fmt.Println()
 

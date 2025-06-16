@@ -16,14 +16,14 @@ func NewtonForwardDifference(table FiniteDifferenceTable, values FuncValues, x f
 	return result
 }
 
-func NewtonDividedDifference(table [][]float64, values FuncValues, x float64) float64 {
+func NewtonDividedDifference(table DividedDifferenceTable, values FuncValues, x float64) float64 {
 	n := len(values.X)
-	result := table[0][0]
+	result := table.Table[0][0]
 	prod := float64(1)
 
 	for i := 1; i < n; i++ {
 		prod *= (x - values.X[i-1])
-		result += table[0][i] * prod
+		result += table.Table[0][i] * prod
 	}
 	return result
 }
