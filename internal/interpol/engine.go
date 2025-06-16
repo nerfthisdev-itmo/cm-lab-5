@@ -22,9 +22,17 @@ func ApplyAllInterpolations(values FuncValues, x float64) {
 	if uniform {
 		fmt.Println("Шаг h постоянный, используем метод конечных разностей.")
 		fdt := BuildFiniteDifferenceTable(values)
-		PrintFiniteDifferenceTable(fdt, values)
-		yFinite := NewtonForwardDifference(fdt, values, x)
-		fmt.Printf("Многочлен Ньютона (конечные разности): %.6f\n", yFinite)
+		mid := (values.X[0] + values.X[len(values.X)-1])
+		var yFinite float64
+		if x <= mid {
+			yFinite = NewtonForwardDifference(fdt, values, x)
+			fmt.Printf("Многочлен Ньютона (конечные разности, вперед): %.6f\n", yFinite)
+		} else {
+			yFinite = NewtonBackwardDifference(fdt, values, x)
+			fmt.Printf("Многочлен Ньютона (конечные разности, назад): %.6f\n", yFinite)
+
+		}
+
 	} else {
 		fmt.Println("Шаг h непостоянный, метод по конечным разностям не применяется.")
 		ddt := BuildDividedDifferenceTable(values)

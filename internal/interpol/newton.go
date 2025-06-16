@@ -28,6 +28,22 @@ func NewtonDividedDifference(table DividedDifferenceTable, values FuncValues, x 
 	return result
 }
 
+func NewtonBackwardDifference(table FiniteDifferenceTable, values FuncValues, x float64) float64 {
+	n := len(values.X)
+	h := values.X[1] - values.X[0]
+	t := (x - values.X[n-1]) / h
+
+	result := table.Table[n-1][0]
+	prod := 1.0
+
+	for i := 1; i < n; i++ {
+		prod *= (t + float64(i-1))
+		result += (prod / factorial(i)) * table.Table[n-i-1][i]
+	}
+
+	return result
+}
+
 func factorial(n int) float64 {
 	res := 1.0
 	for i := 2; i <= n; i++ {
